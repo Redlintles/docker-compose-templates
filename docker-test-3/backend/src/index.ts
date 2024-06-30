@@ -21,7 +21,10 @@ app.use("/", async (_: Request, res: Response) => {
       return `<h1>Sequelize: ${item.msg}</h1>`;
     });
 
-    return res.send(html.join(""));
+    return res.json({
+      error: false,
+      code: html,
+    });
   }
 });
 
