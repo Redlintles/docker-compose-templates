@@ -21,3 +21,8 @@ Para excluir os containers, rode:
 Uma aplicação super simples em node que se conecta a um banco de dados mysql, ambos em containers diferentes.
 É o primeiro e mais simples template deste repositório, usando apenas o driver do mysql para fazer a conexão.
 
+## Docker-test-2
+
+Uma evolução da primeira aplicação, aqui, faço a integração com o sequelize-cli para uma melhor gestão do schema do banco de dados
+contudo, a conexão da aplicação em si com o banco de dados ainda é feita via driver, algo que será removido em breve
+
