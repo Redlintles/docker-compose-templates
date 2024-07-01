@@ -1,0 +1,68 @@
+version: "3.8"
+
+services:
+  db:
+    build:
+      context: ./mysql
+    container_name: db
+    environment:
+      MYSQL_ROOT_PASSWORD: banana_02
+      MYSQL_DATABASE: test
+      MYSQL_ROOT_HOST: "%"
+    ports:
+      - "3306:3306"
+    networks:
+      - nt1
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  backend:
+    container_name: backend
+    build:
+      context: ./backend
+    environment:
+      PORT: "5000"
+      DB_DATABASE: test
+      DB_USER: root
+      DB_PASSWORD: banana_02
+      DB_HOST: db
+      DB_PORT: "3306"
+    depends_on:
+      - db
+    ports:
+      - "5000:5000"
+    networks:
+      - nt1
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: frontend
+    environment:
+      VITE_API_URL: "http://localhost/api/"
+      VITE_PORT: "3000"
+      VITE_BACKEND_HOST: backend
+    depends_on:
+      - backend
+    networks:
+      - nt1
+    ports:
+      - "3000:3000"
+
+  proxy:
+    container_name: proxy
+    build: ./proxy
+    ports:
+      - "80:80"
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - nt1
+
+networks:
+  nt1:
+    driver: bridge
+
+volumes:
+  mysql-data:
