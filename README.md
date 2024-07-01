@@ -26,3 +26,11 @@ Uma aplicação super simples em node que se conecta a um banco de dados mysql, 
 Uma evolução da primeira aplicação, aqui, faço a integração com o sequelize-cli para uma melhor gestão do schema do banco de dados
 contudo, a conexão da aplicação em si com o banco de dados ainda é feita via driver, algo que será removido em breve
 
+## Docker-test-3
+
+Agora incluímos o sequelize no código interno da aplicação
+
+## Docker-test-4
+
+Agora incluímos um front-end feito em react(vite) que consome a API, e um proxy reverso para permitir o frontend consumir essa api sem problemas.
+
