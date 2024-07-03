@@ -1,0 +1,38 @@
+services:
+  db:
+    container_name: db
+    build:
+      context: ./mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: banana_02
+      MYSQL_DATABASE: test
+      MYSQL_ROOT_HOST: "%"
+    ports:
+      - "3306:3306"
+    networks:
+      - nt1
+    volumes:
+      - mysql-data:/var/lib/mysql
+  backend:
+    container_name: backend
+    build:
+      context: ./backend
+    environment:
+      DB_HOST: db
+      DB_PASSWORD: banana_02
+      DB_USER: root
+      DB_PORT: "3306"
+      DB_NAME: "test"
+      PORT: "80"
+    networks:
+      - nt1
+    depends_on:
+      - db
+    ports:
+      - "80:80"
+networks:
+  nt1:
+    driver: bridge
+
+volumes:
+  mysql-data:
