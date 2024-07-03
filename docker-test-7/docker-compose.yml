@@ -1,0 +1,37 @@
+services:
+  db:
+    build:
+      context: ./mongodb
+    container_name: db
+    ports:
+      - "27017:27017"
+    networks:
+      - nt1
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: jerry
+      MONGO_INITDB_ROOT_PASSWORD: banana_02
+      MONGO_INITDB_DATABASE: test
+    volumes:
+      - mongodb_data:/data/db
+  backend:
+    build:
+      context: ./backend
+    container_name: backend
+    networks:
+      - nt1
+    environment:
+      DB_HOST: db
+      DB_USER: jerry
+      DB_PASSWORD: banana_02
+      DB_PORT: "27017"
+      DB_NAME: "test"
+      PORT: "3000"
+    ports:
+      - "3000:3000"
+
+networks:
+  nt1:
+    driver: bridge
+
+volumes:
+  mongodb_data:
