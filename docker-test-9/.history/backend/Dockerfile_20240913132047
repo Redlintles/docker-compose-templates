@@ -1,0 +1,31 @@
+FROM ubuntu:22.04
+
+
+RUN apt-get update && \
+  apt-get install -y \
+  wget \
+  gnupg \
+  software-properties-common && \
+  apt-get clean
+
+RUN wget -qO - https://packages.adoptium.net/artifactory/api/gpg/public/gpg-key-2023.asc | apt-key add - && \
+  add-apt-repository ppa:adoptium/ppa
+
+# Atualize a lista de pacotes novamente e instale o Java 21
+RUN apt-get update && \
+  apt-get install -y temurin-21-jdk && \
+  apt-get clean
+
+# Defina a variável de ambiente JAVA_HOME
+ENV JAVA_HOME=/usr/lib/jvm/temurin-21-jdk
+
+WORKDIR /app
+
+COPY --from=build /app/target/tutorials-0.0.1-SNAPSHOT.jar /app/tutorials-0.0.1-SNAPSHOT.jar
+
+COPY scripts/wait-for-it.sh /usr/local/bin/wait-for-it.sh
+RUN chmod +x /usr/local/bin/wait-for-it.sh
+
+EXPOSE 8080
+
+ENTRYPOINT ["/usr/local/bin/wait-for-it.sh", "db:5432", "--", "java", "-jar", "/app/tutorials-0.0.1-SNAPSHOT.jar"]
