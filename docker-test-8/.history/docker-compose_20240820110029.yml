@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  db:
+    build:
+      context: "./db"
+  backend:
+    build:
+      context: "./backend"
+  frontend:
+    build:
+      context: "./frontend"

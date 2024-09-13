@@ -1,0 +1,3 @@
+FROM tomcat:latest
+
+COPY ./target/backend.war ./usrl/local/tomcat/webapps/

@@ -1,0 +1,9 @@
+FROM tomcat:latest
+
+COPY ./target/backend.war ./usrl/local/tomcat/webapps/
+
+RUN apt-get update && apt-get install -y netcat-traditional
+
+
+
+EXPOSE 8080

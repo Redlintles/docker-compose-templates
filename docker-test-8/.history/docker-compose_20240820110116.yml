@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  db:
+    build:
+      context: "./db"
+    container_name: db
+
+    networks:
+      - nt1
+  backend:
+    build:
+      context: "./backend"
+    container_name: backend
+  frontend:
+    build:
+      context: "./frontend"
+    container_name: frontend

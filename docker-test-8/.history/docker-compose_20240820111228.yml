@@ -1,0 +1,54 @@
+version: "3.8"
+
+services:
+  db:
+    build:
+      context: "./db"
+    container_name: db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin1234
+      POSTGRES_DB: teste
+    networks:
+      - nt1
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/db_data
+  backend:
+    build:
+      context: "./backend"
+    container_name: backend
+    depends_on:
+      - db
+    networks:
+      - nt1
+    ports:
+      - "8080:8080"
+  frontend:
+    build:
+      context: "./frontend"
+    container_name: frontend
+    depends_on:
+      - backend
+    networks:
+      - nt1
+    ports:
+      - "3000:3000"
+  proxy:
+    container_name: proxy
+    build: ./proxy
+    ports:
+      - "80:80"
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - nt1
+
+networks:
+  nt1:
+    driver: bridge
+
+volumes:
+  db-data:

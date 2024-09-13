@@ -1,0 +1,46 @@
+version: "3.8"
+
+services:
+  db:
+    build:
+      context: "./db"
+    container_name: db
+
+    networks:
+      - nt1
+
+    volumes:
+      - db-data:/var/lib/dbdata
+  backend:
+    build:
+      context: "./backend"
+    container_name: backend
+    depends_on:
+      - db
+    networks:
+      - nt1
+  frontend:
+    build:
+      context: "./frontend"
+    container_name: frontend
+    depends_on:
+      - backend
+    networks:
+      - nt1
+  proxy:
+    container_name: proxy
+    build: ./proxy
+    ports:
+      - "80:80"
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - nt1
+
+networks:
+  nt1:
+    driver: bridge
+
+volumes:
+  db-data:
